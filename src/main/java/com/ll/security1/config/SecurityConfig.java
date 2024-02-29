@@ -22,6 +22,9 @@ public class SecurityConfig{
 					.requestMatchers("/manager/**").hasAnyRole("ADMIN", "MANAGER")
 					.requestMatchers("/admin/**").hasRole("ADMIN")
 					.anyRequest().permitAll()
+			)
+			.formLogin(formLogin ->
+				formLogin.loginPage("/login")
 			);
 
 		return http.build();
