@@ -29,6 +29,7 @@ public class IndexController {
 		return "manager";
 	}
 
+	//원래는 시큐리티가 낚아챘지만, SecurityConfig파일 생성 후 작동안함
 	@GetMapping("/login")
 	@ResponseBody
 	public String login() {
