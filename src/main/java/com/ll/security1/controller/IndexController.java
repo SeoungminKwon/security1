@@ -51,7 +51,7 @@ public class IndexController {
 	@PostMapping("/join")
 	public String join(Member member) {
 		memberService.join(member);
-		return "redirect:/loginForm";
+		return "redirect:/login";
 	}
 
 
