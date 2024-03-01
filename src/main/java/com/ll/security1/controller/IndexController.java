@@ -1,6 +1,7 @@
 package com.ll.security1.controller;
 
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -68,6 +69,14 @@ public class IndexController {
 	@ResponseBody
 	public String info() {
 		return "개인정보";
+	}
+
+
+	@PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')") // 액션메서드 실행전에 실행됨, 여러개의 권한을 걸고 싶을 시
+	@GetMapping("/data")
+	@ResponseBody
+	public String data() {
+		return "데이터 정보";
 	}
 
 }
