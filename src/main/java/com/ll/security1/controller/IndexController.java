@@ -4,6 +4,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,6 +33,23 @@ public class IndexController {
 
 		return "세션 정보 확인하기";
 	}
+
+	@GetMapping("/test/oauth/login")
+	@ResponseBody
+	public String testOAuthLogin(
+		Authentication authentication, //DI(의존성 주입)
+		@AuthenticationPrincipal OAuth2User oauth
+	) {
+		System.out.println("/test/oauth/login ===========================");
+		OAuth2User oAuth2User = (OAuth2User)authentication.getPrincipal();
+		//밑의 둘의 정보가 같은 것을 알 수 있음
+		System.out.println("oAuth2User.getAttributes() = " + oAuth2User.getAttributes());
+		System.out.println("oauth.getAttributes() = " + oauth.getAttributes());
+
+		return "OAuth2 세션 정보 확인하기";
+	}
+
+
 
 	@GetMapping({"", "/"})
 	public String index() {
