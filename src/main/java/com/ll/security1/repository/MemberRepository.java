@@ -6,4 +6,5 @@ import com.ll.security1.member.entity.Member;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
+	public Member findByUsername(String username);
 }
