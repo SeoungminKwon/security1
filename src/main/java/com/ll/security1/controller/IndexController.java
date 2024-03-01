@@ -48,7 +48,7 @@ public class IndexController {
 
 		return "OAuth2 세션 정보 확인하기";
 	}
-
+	
 
 
 	@GetMapping({"", "/"})

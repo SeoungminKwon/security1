@@ -9,9 +9,11 @@ package com.ll.security1.auth;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import com.ll.security1.member.entity.Member;
 
@@ -24,12 +26,20 @@ import lombok.Data;
  */
 
 @Data
-public class CustomUserDetail implements UserDetails {
+public class CustomUserDetail implements UserDetails, OAuth2User {
 
 	private Member member; // 콤포지션 (콤포지션 : 한 클래스가 다른 클래스의 인스턴스를 포함하는 방식)
+	private Map<String, Object> attributes;
 
+	//일반 로그인 생성자
 	public CustomUserDetail(Member member) {
 		this.member = member;
+	}
+
+	//OAuth2 로그인 생성자
+	public CustomUserDetail(Member member, Map<String, Object> attributes) {
+		this.member = member;
+		this.attributes = attributes;
 	}
 
 	//해당 User의 권한을 리턴하는 곳
@@ -78,4 +88,15 @@ public class CustomUserDetail implements UserDetails {
 
 		return true;
 	}
+
+	@Override
+	public Map<String, Object> getAttributes() {
+		return attributes;
+	}
+
+	@Override
+	public String getName() {
+		return null;
+	}
+
 }

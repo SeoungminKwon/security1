@@ -1,11 +1,14 @@
 package com.ll.security1.config.oauth;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import com.ll.security1.auth.CustomUserDetail;
+import com.ll.security1.member.entity.Member;
 import com.ll.security1.repository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -15,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 public class PrincipleOauth2UserService extends DefaultOAuth2UserService {
 
 	private final MemberRepository memberRepository;
+	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	//구글로 부터 받은 userRequest 데이터에 대한 후처리되는 함수
 	@Override
@@ -23,15 +27,38 @@ public class PrincipleOauth2UserService extends DefaultOAuth2UserService {
 		System.out.println("userRequest.getClientRegistration() = " + userRequest.getClientRegistration());
 		System.out.println("userRequest.getAccessToken() = " + userRequest.getAccessToken().getTokenValue());
 
-		// 구글 로그인 버튼 클릭 -> 구글 로그인 창 -> 로그인 완료 -> code를 리턴(OAuth2-Client라이브러리) -> Access토큰 요청
-		// userRequest 정보 -> loadUser함수 호출 -> 구글로 부터 회원 프로필을 받아줌
-		System.out.println(
-			"super.loadUser(userRequest).getAttributes() = " + super.loadUser(userRequest).getAttributes());
+
 
 		OAuth2User oAuth2User = super.loadUser(userRequest);
-		//TODO 프로젝트에서는 추가 정보 입력하고 회원가입 진행
-		//회원가입 강제로 진행해볼 예정
+		// 구글 로그인 버튼 클릭 -> 구글 로그인 창 -> 로그인 완료 -> code를 리턴(OAuth2-Client라이브러리) -> Access토큰 요청
+		// userRequest 정보 -> loadUser함수 호출 -> 구글로 부터 회원 프로필을 받아줌
+		System.out.println("getAttributes = " + oAuth2User.getAttributes());
 
-		return super.loadUser(userRequest);
+		//회원가입 강제로 진행해볼 예정
+		String provider = userRequest.getClientRegistration().getClientId(); // google
+		String providerId = oAuth2User.getAttribute("sub");
+		String username = provider + "_" + providerId; // google_402104210010204
+		String password = bCryptPasswordEncoder.encode("겟인데어"); //OAuth2 로그인은 username, password가 큰 의미가 없다.
+		String email = oAuth2User.getAttribute("email");
+		String role = "ROLE_USER";
+
+		Member member = memberRepository.findByUsername(username);
+
+		if (member == null) {
+			member = Member.builder()
+				.username(username)
+				.password(password)
+				.email(email)
+				.role(role)
+				.provider(provider)
+				.providerId(providerId)
+				.build();
+			memberRepository.save(member);
+		}
+		//TODO 프로젝트에서는 추가 정보 입력하고 회원가입 진행
+
+
+		//Authentication 객체 안으로 들어감
+		return new CustomUserDetail(member, oAuth2User.getAttributes());
 	}
 }
