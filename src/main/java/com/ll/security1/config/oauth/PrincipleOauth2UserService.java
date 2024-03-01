@@ -6,8 +6,15 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import com.ll.security1.repository.MemberRepository;
+
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class PrincipleOauth2UserService extends DefaultOAuth2UserService {
+
+	private final MemberRepository memberRepository;
 
 	//구글로 부터 받은 userRequest 데이터에 대한 후처리되는 함수
 	@Override
@@ -21,7 +28,8 @@ public class PrincipleOauth2UserService extends DefaultOAuth2UserService {
 		System.out.println(
 			"super.loadUser(userRequest).getAttributes() = " + super.loadUser(userRequest).getAttributes());
 
-
+		OAuth2User oAuth2User = super.loadUser(userRequest);
+		//TODO 프로젝트에서는 추가 정보 입력하고 회원가입 진행
 		//회원가입 강제로 진행해볼 예정
 
 		return super.loadUser(userRequest);

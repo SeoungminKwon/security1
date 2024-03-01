@@ -5,7 +5,7 @@ package com.ll.security1.auth;
 // Security ContextHolder에 들어갈수 있는 오브젝트는 정해져 있음
 // 오브젝트 타입 => Authentication 타입의 객체
 // Authentication 안에 User정보가 있어야 됨
-//User오브젝트의 타입 => UserDetail 타입 객체
+//User오브젝트의 타입 => CustomUserDetail 타입 객체
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,17 +15,20 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.ll.security1.member.entity.Member;
 
+import lombok.Data;
+
 /** 정리
  * SecuritySession(Security ContextHolder) 안에는 Authentication 타입의 객체만 들어갈 수 있다.
  * Authentication 객체에 User정보를 저장하는데, User정보 객체 => UserDetails 타입이어야한다.
- * 현제 UserDetail -> UserDetails타입
+ * 현제 CustomUserDetail -> UserDetails타입
  */
 
-public class UserDetail implements UserDetails {
+@Data
+public class CustomUserDetail implements UserDetails {
 
 	private Member member; // 콤포지션 (콤포지션 : 한 클래스가 다른 클래스의 인스턴스를 포함하는 방식)
 
-	public UserDetail(Member member) {
+	public CustomUserDetail(Member member) {
 		this.member = member;
 	}
 

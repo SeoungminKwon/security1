@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 // 규칙이기 때문에 UserDetailsService를 구현한 클래스에서 loadUserByUsername를 작성해줘야한다.
 @Service
 @RequiredArgsConstructor
-public class UserDetailService implements UserDetailsService {
+public class CustomUserDetailService implements UserDetailsService {
 
 	private final MemberRepository memberRepository;
 
@@ -29,7 +29,7 @@ public class UserDetailService implements UserDetailsService {
 
 		Member findMember = memberRepository.findByUsername(username);
 		if (findMember != null) {
-			return new UserDetail(findMember);
+			return new CustomUserDetail(findMember);
 		}
 		return null;
 	}
