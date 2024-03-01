@@ -13,7 +13,7 @@ public class PrincipleOauth2UserService extends DefaultOAuth2UserService {
 	@Override
 	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 		System.out.println("userRequest.getClientRegistration() = " + userRequest.getClientRegistration());
-		System.out.println("userRequest.getAccessToken() = " + userRequest.getAccessToken());
+		System.out.println("userRequest.getAccessToken() = " + userRequest.getAccessToken().getTokenValue());
 		System.out.println(
 			"super.loadUser(userRequest).getAttributes() = " + super.loadUser(userRequest).getAttributes());
 		return super.loadUser(userRequest);
