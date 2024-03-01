@@ -21,6 +21,7 @@ public class IndexController {
 	}
 
 	@GetMapping("/user")
+	@ResponseBody
 	public String user() {
 		return "user";
 	}
