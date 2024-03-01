@@ -20,3 +20,14 @@ spring:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     show-sql: true
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 763450589094-8latjin0q361qo5auts8i34lscgrku5m.apps.googleusercontent.com
+            client-secret: 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
+            scope:
+              - email
+              - profile
