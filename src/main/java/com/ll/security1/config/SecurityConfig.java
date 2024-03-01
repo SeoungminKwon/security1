@@ -37,6 +37,10 @@ public class SecurityConfig{
 				formLogin.loginPage("/login")
 					.loginProcessingUrl("/login") //login 주소가 호출이 되면 시큐리티가 낚아채서 대신 로그인을 진행한다.
 					.defaultSuccessUrl("/") // loginPage에서 로그인하면 홈으로 보내주는데, 특정페이지로 가려다가 로그인하려고 하면 특정페이지로 보내줌
+			)
+			.oauth2Login(
+				oauth2 ->
+					oauth2.loginPage("/login") // 구글 로그인이 완료된 뒤의 후처리가 필요함
 			);
 		
 		return http.build();
