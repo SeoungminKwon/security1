@@ -23,6 +23,8 @@ public class CustomUserDetailService implements UserDetailsService {
 	// 시큐리티 session = Authentication = UserDetails
 	// loadUserByUsername에서 리턴된 값이 Authentication(내부 UserDetails) 이렇게 들어감
 	// 마지막에는  시큐리티 session(내부 Authentication(내부 UserDetails))이렇게 들어감
+
+	// 함수 종료시 @AuthenticationPrincippal 어노테이션이 만들어 진다.
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		//loginForm 에서 name="username2"라고 적으면 안받아짐 -> 즉 loginForm에서 name가 맞춰줘야한다. (만약 바꿀꺼면 security config에서 usernameParameter를 설정해줘야함)

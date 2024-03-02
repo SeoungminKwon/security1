@@ -21,6 +21,8 @@ public class PrincipleOauth2UserService extends DefaultOAuth2UserService {
 
 
 	//구글로 부터 받은 userRequest 데이터에 대한 후처리되는 함수
+
+	// 함수 종료시 @AuthenticationPrincippal 어노테이션이 만들어 진다.
 	@Override
 	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 		// 서버의 기본 정보 registrationId로 어떤 OAuth로 로그인 했는지 확인 가능
