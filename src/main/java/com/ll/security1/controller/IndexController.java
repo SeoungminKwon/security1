@@ -48,7 +48,7 @@ public class IndexController {
 
 		return "OAuth2 세션 정보 확인하기";
 	}
-	
+
 
 
 	@GetMapping({"", "/"})
@@ -56,9 +56,18 @@ public class IndexController {
 		return "index";
 	}
 
+	//OAuth2 로그인을 해도 UserDetails
+	//일반 로그인을 해도 UserDetails 로 받을 수 있음
+	// @AuthenticationPrincipal로 접근해도 다운 캐스팅 할 필요가 없음
+	// UserService, PrincipalOAuth2UserService는 만들지않아도 loadUser가 발동을 함 -> CustomUserDetail을 리턴하기 위해서 만듬
+	// 리턴되는 CustomUserDetails 가 Authentication에 저장된다.
+	// UserService, PrincipalOAuth2UserService를 오버라이딩 한이유는 1. CustomUserDetails를 리턴하기 위함 // 2. OAuth로 로그인시 회원가입을 강제로 진행시키기 위함
 	@GetMapping("/user")
 	@ResponseBody
-	public String user() {
+	public String user(
+		@AuthenticationPrincipal CustomUserDetail userDetail
+	) {
+		System.out.println("userDetail.getMember() = " + userDetail.getMember());
 		return "user";
 	}
 

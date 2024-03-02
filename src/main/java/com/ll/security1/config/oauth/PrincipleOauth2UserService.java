@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 public class PrincipleOauth2UserService extends DefaultOAuth2UserService {
 
 	private final MemberRepository memberRepository;
-	private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
 
 	//구글로 부터 받은 userRequest 데이터에 대한 후처리되는 함수
 	@Override
@@ -38,13 +38,14 @@ public class PrincipleOauth2UserService extends DefaultOAuth2UserService {
 		String provider = userRequest.getClientRegistration().getClientId(); // google
 		String providerId = oAuth2User.getAttribute("sub");
 		String username = provider + "_" + providerId; // google_402104210010204
-		String password = bCryptPasswordEncoder.encode("겟인데어"); //OAuth2 로그인은 username, password가 큰 의미가 없다.
+		String password = new BCryptPasswordEncoder().encode("겟인데어"); //OAuth2 로그인은 username, password가 큰 의미가 없다.
 		String email = oAuth2User.getAttribute("email");
 		String role = "ROLE_USER";
 
 		Member member = memberRepository.findByUsername(username);
 
 		if (member == null) {
+			System.out.println("구글 로그인이 최초입니다.");
 			member = Member.builder()
 				.username(username)
 				.password(password)
@@ -54,6 +55,8 @@ public class PrincipleOauth2UserService extends DefaultOAuth2UserService {
 				.providerId(providerId)
 				.build();
 			memberRepository.save(member);
+		}else{
+			System.out.println("구글 로그인을 이미 한 적이 있습니다. 당신은 자동회원가입이 되어 있습니다.");
 		}
 		//TODO 프로젝트에서는 추가 정보 입력하고 회원가입 진행
 
