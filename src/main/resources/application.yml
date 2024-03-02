@@ -31,3 +31,11 @@ spring:
             scope:
               - email
               - profile
+
+          facebook:
+            client-id: 1357867378234638
+            client-secret: 7f68509c4fecb1c6f1e08334374469aa
+            scope:
+              - email
+              # 페이스북이 제공하는 프로파일 이름을 정확히 적어야함
+              - public_profile

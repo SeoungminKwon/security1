@@ -37,8 +37,8 @@ public class PrincipleOauth2UserService extends DefaultOAuth2UserService {
 		System.out.println("getAttributes = " + oAuth2User.getAttributes());
 
 		//회원가입 강제로 진행해볼 예정
-		String provider = userRequest.getClientRegistration().getClientId(); // google
-		String providerId = oAuth2User.getAttribute("sub");
+		String provider = userRequest.getClientRegistration().getRegistrationId(); // google
+		String providerId = oAuth2User.getAttribute("sub"); //페이스북 로그인시 null값들어갈 것임 - facebook은 id임
 		String username = provider + "_" + providerId; // google_402104210010204
 		String password = new BCryptPasswordEncoder().encode("겟인데어"); //OAuth2 로그인은 username, password가 큰 의미가 없다.
 		String email = oAuth2User.getAttribute("email");
